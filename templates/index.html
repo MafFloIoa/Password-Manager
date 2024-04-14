@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome, {{ username }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        p {
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            border: none; /* aggiunto */
+            cursor: pointer; /* aggiunto */
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .logout-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .action-btns {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .action-btns .btn {
+            margin: 0 5px;
+        }
+        #password {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: calc(100% - 40px); /* ridotto da 20px */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            text-align: center; /* aggiunto */
+        }
+        #generate-btn {
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 10px; /* aggiunto */
+        }
+    </style>
+</head>
+<body onload="generatePassword()"> <!-- Aggiunto l'attributo onload per chiamare la funzione generatePassword() quando la pagina viene caricata -->
+    <div class="container">
+        <h1>Welcome, {{ username }}</h1>
+        <input type="text" id="password" readonly onclick="copyPassword()">
+        <button class="btn" id="generate-btn" onclick="generatePassword()">Generate Password</button>
+        {% if username %}
+            <div class="action-btns">
+                <a href="/add_account" class="btn">Add Account</a>
+                <a href="/view_accounts" class="btn">View Accounts</a>
+            </div>
+            <br><br>
+            <a href="/logout" class="btn logout-btn">Logout</a>
+        {% else %}
+            <p>Please <a href="/login">login</a> or <a href="/register">register</a>.</p>
+        {% endif %}
+    </div>
+
+    <script>
+        // Funzione per generare una password casuale
+        function generatePassword() {
+            var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+            var passwordLength = 30; // Aumentato a 30 caratteri
+
+            var password = "";
+            for (var i = 0; i < passwordLength; i++) {
+                var randomIndex = Math.floor(Math.random() * charset.length);
+                password += charset[randomIndex];
+            }
+
+            document.getElementById("password").value = password;
+        }
+
+        // Funzione per copiare la password
+        function copyPassword() {
+            var passwordField = document.getElementById("password");
+            passwordField.select();
+            document.execCommand("copy");
+            alert("Password copiata!");
+        }
+    </script>
+</body>
+</html>
